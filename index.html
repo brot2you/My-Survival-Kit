@@ -2181,7 +2181,7 @@ var GRAMMAR_GROUPS = [{
     en: "What time is it?",
     fr: "Quelle heure est-il ?",
     tip: "La question pour demander l'heure. Réponse : It's...",
-    emoji: "🕐"
+    emoji: "⏰"
   }, {
     en: "It's one o'clock",
     fr: "Il est une heure",
@@ -2191,27 +2191,27 @@ var GRAMMAR_GROUPS = [{
     en: "It's half past two",
     fr: "Il est deux heures et demie",
     tip: "Half past = et demie. Half past 3 = 3h30.",
-    emoji: "🕞"
+    emoji: "🕝"
   }, {
     en: "It's quarter past three",
     fr: "Il est trois heures et quart",
     tip: "Quarter past = et quart. Quarter past 4 = 4h15.",
-    emoji: "🕓"
+    emoji: "🕰️"
   }, {
     en: "It's quarter to four",
     fr: "Il est quatre heures moins le quart",
     tip: "Quarter to = moins le quart. Quarter to 5 = 4h45.",
-    emoji: "🕟"
+    emoji: "🕰️"
   }, {
     en: "It's ten past five",
     fr: "Il est cinq heures dix",
     tip: "[minutes] past [heure] = avant la demi-heure.",
-    emoji: "🕔"
+    emoji: "🕰️"
   }, {
     en: "It's twenty to six",
     fr: "Il est six heures moins vingt",
     tip: "[minutes] to [heure suivante] = après la demi-heure.",
-    emoji: "🕠"
+    emoji: "🕰️"
   }, {
     en: "am",
     fr: "du matin (minuit → midi)",
@@ -3658,14 +3658,20 @@ function memEligible(items) {
   });
   return out;
 }
+// Mode image : seuls les mots dont le dessin est sans ambiguïté (liste vérifiée à la main).
+// Les mots abstraits (connecteurs, grammaire, prépositions, mots interrogatifs...) n'ont pas d'image fiable et restent en mode EN ↔ FR.
+var MEM_PICS = {"Circle": "⭕", "Highlight": "🖍️", "Tick (✓) the box": "☑️", "Number the sentences": "🔢", "Write a sentence": "📝", "Find / Look for": "🔍", "Open your book(s)": "📖", "Close your book(s)": "📕", "Stand up": "🧍", "Sit down": "🪑", "Put up your hand": "🙋", "Work in pairs": "👥", "Be quiet / Quietly": "🤫", "Pay attention": "👀", "Listen (and repeat)": "👂", "Spell it": "🔤", "Read aloud": "📢", "Take out your copybook": "📓", "Can I go to the toilet, please?": "🚻", "I don't know": "🤷", "Can you help me, please?": "🆘", "I feel confident": "😎", "I'm confused": "😵‍💫", "I'm stressed": "😰", "I need more time": "⏳", "I'm not sure": "🤨", "I'm ready": "👍", "I find it difficult": "😖", "I find it easy": "😄", "I'm doing my best": "💪", "go / goes": "🚶", "see / sees": "👁️", "like / likes": "❤️", "look / looks": "👀", "find / finds": "🔍", "think / thinks": "🤔", "It's one o'clock": "🕐", "It's half past two": "🕝", "My birthday is on the 15th of May": "🎂", "he": "👦", "she": "👧"};
 function memImageItems(items) {
-  var count = {};
+  var count = {}, out = [];
   items.forEach(function (it) {
-    if (it.emoji) count[it.emoji] = (count[it.emoji] || 0) + 1;
+    var pic = MEM_PICS[it.en];
+    if (pic) count[pic] = (count[pic] || 0) + 1;
   });
-  return items.filter(function (it) {
-    return it.emoji && count[it.emoji] === 1;
+  items.forEach(function (it) {
+    var pic = MEM_PICS[it.en];
+    if (pic && count[pic] === 1) out.push({ en: it.en, fr: it.fr, tip: it.tip, emoji: pic });
   });
+  return out;
 }
 function memLenClass(s) {
   var n = (s || "").length;
@@ -4286,7 +4292,7 @@ function MemoryHub(_ref23) {
     onClick: function onClick() {
       return setKind("img");
     }
-  }, React.createElement("b", null, "\uD83D\uDDBC\uFE0F \u2194 EN"), React.createElement("span", null, imgOk ? "Associe l'image au mot anglais" : "Pas assez d'images différentes dans ces cartes")))), React.createElement("div", {
+  }, React.createElement("b", null, "\uD83D\uDDBC\uFE0F \u2194 EN"), React.createElement("span", null, imgOk ? "Associe l'image au mot anglais" : "Pas assez de mots illustrables dans ces cartes (les mots abstraits n'ont pas d'image)")))), React.createElement("div", {
     className: "mem-panel p-yellow"
   }, React.createElement("h3", {
     className: "mem-h"
@@ -6057,13 +6063,13 @@ const GRAMMAR_GROUPS = [
    {en:"no",fr:"aucun / pas de",tip:"« There is no... » = il n'y a pas de...",emoji:"🚫"},
  ]},
  {id:"heure",label:"Dire l'heure",items:[
-   {en:"What time is it?",fr:"Quelle heure est-il ?",tip:"La question pour demander l'heure. Réponse : It's...",emoji:"🕐"},
+   {en:"What time is it?",fr:"Quelle heure est-il ?",tip:"La question pour demander l'heure. Réponse : It's...",emoji:"⏰"},
    {en:"It's one o'clock",fr:"Il est une heure",tip:"O'clock = heure pile, sans minutes.",emoji:"🕐"},
-   {en:"It's half past two",fr:"Il est deux heures et demie",tip:"Half past = et demie. Half past 3 = 3h30.",emoji:"🕞"},
-   {en:"It's quarter past three",fr:"Il est trois heures et quart",tip:"Quarter past = et quart. Quarter past 4 = 4h15.",emoji:"🕓"},
-   {en:"It's quarter to four",fr:"Il est quatre heures moins le quart",tip:"Quarter to = moins le quart. Quarter to 5 = 4h45.",emoji:"🕟"},
-   {en:"It's ten past five",fr:"Il est cinq heures dix",tip:"[minutes] past [heure] = avant la demi-heure.",emoji:"🕔"},
-   {en:"It's twenty to six",fr:"Il est six heures moins vingt",tip:"[minutes] to [heure suivante] = après la demi-heure.",emoji:"🕠"},
+   {en:"It's half past two",fr:"Il est deux heures et demie",tip:"Half past = et demie. Half past 3 = 3h30.",emoji:"🕝"},
+   {en:"It's quarter past three",fr:"Il est trois heures et quart",tip:"Quarter past = et quart. Quarter past 4 = 4h15.",emoji:"🕰️"},
+   {en:"It's quarter to four",fr:"Il est quatre heures moins le quart",tip:"Quarter to = moins le quart. Quarter to 5 = 4h45.",emoji:"🕰️"},
+   {en:"It's ten past five",fr:"Il est cinq heures dix",tip:"[minutes] past [heure] = avant la demi-heure.",emoji:"🕰️"},
+   {en:"It's twenty to six",fr:"Il est six heures moins vingt",tip:"[minutes] to [heure suivante] = après la demi-heure.",emoji:"🕰️"},
    {en:"am",fr:"du matin (minuit → midi)",tip:"Ante meridiem. 9am = 9h du matin.",emoji:"🌅"},
    {en:"pm",fr:"de l'après-midi / du soir (midi → minuit)",tip:"Post meridiem. 3pm = 15h.",emoji:"🌆"},
    {en:"noon / midday",fr:"midi",tip:"12pm = noon = midday.",emoji:"☀️"},
@@ -6649,11 +6655,15 @@ function memEligible(items){
   });
   return out;
 }
-// image mode: keep only words whose picture is unique inside the deck
+// Mode image : seuls les mots dont le dessin est sans ambiguïté (liste vérifiée à la main).
+// Les mots abstraits (connecteurs, grammaire, prépositions, mots interrogatifs...) n'ont pas d'image fiable et restent en mode EN ↔ FR.
+const MEM_PICS = {"Circle": "⭕", "Highlight": "🖍️", "Tick (✓) the box": "☑️", "Number the sentences": "🔢", "Write a sentence": "📝", "Find / Look for": "🔍", "Open your book(s)": "📖", "Close your book(s)": "📕", "Stand up": "🧍", "Sit down": "🪑", "Put up your hand": "🙋", "Work in pairs": "👥", "Be quiet / Quietly": "🤫", "Pay attention": "👀", "Listen (and repeat)": "👂", "Spell it": "🔤", "Read aloud": "📢", "Take out your copybook": "📓", "Can I go to the toilet, please?": "🚻", "I don't know": "🤷", "Can you help me, please?": "🆘", "I feel confident": "😎", "I'm confused": "😵‍💫", "I'm stressed": "😰", "I need more time": "⏳", "I'm not sure": "🤨", "I'm ready": "👍", "I find it difficult": "😖", "I find it easy": "😄", "I'm doing my best": "💪", "go / goes": "🚶", "see / sees": "👁️", "like / likes": "❤️", "look / looks": "👀", "find / finds": "🔍", "think / thinks": "🤔", "It's one o'clock": "🕐", "It's half past two": "🕝", "My birthday is on the 15th of May": "🎂", "he": "👦", "she": "👧"};
+// image mode: only hand-checked pictures, each unique inside the deck
 function memImageItems(items){
-  const count = {};
-  items.forEach(it=>{ if(it.emoji) count[it.emoji] = (count[it.emoji]||0) + 1; });
-  return items.filter(it=>it.emoji && count[it.emoji] === 1);
+  const count = {}, out = [];
+  items.forEach(it=>{ const pic = MEM_PICS[it.en]; if(pic) count[pic] = (count[pic]||0) + 1; });
+  items.forEach(it=>{ const pic = MEM_PICS[it.en]; if(pic && count[pic] === 1) out.push({en:it.en, fr:it.fr, tip:it.tip, emoji:pic}); });
+  return out;
 }
 function memLenClass(s){ const n = (s||"").length; return n > 18 ? "len-l" : (n > 10 ? "len-m" : ""); }
 function fmtTime(s){ s = Math.max(0, Math.round(s)); const m = Math.floor(s/60), r = s % 60; return m + ":" + (r < 10 ? "0" : "") + r; }
@@ -6948,7 +6958,7 @@ function MemoryHub({cat, initialGroupId, progress, onBack, onEnd}){
             <b>EN ↔ FR</b><span>Associe le mot anglais à sa traduction</span>
           </button>
           <button className={"mem-kind"+(kind==="img"?" on":"")} disabled={!imgOk} onClick={()=>setKind("img")}>
-            <b>🖼️ ↔ EN</b><span>{imgOk ? "Associe l'image au mot anglais" : "Pas assez d'images différentes dans ces cartes"}</span>
+            <b>🖼️ ↔ EN</b><span>{imgOk ? "Associe l'image au mot anglais" : "Pas assez de mots illustrables dans ces cartes (les mots abstraits n'ont pas d'image)"}</span>
           </button>
         </div>
       </div>
